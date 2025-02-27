@@ -72,10 +72,10 @@ Entity* entity_new()
 
 void entity_free(Entity* self)
 {
-    if (!self)return;//can't do work on nothin
-    gf2d_sprite_free(self->sprite);
-    //anything else we allcoate for our entity would get cleaned up here
-    if (self->free)self->free(self->data);
+    if (!self)return;
+    if(self->free) self->free(self);
+
+    memset(self, 0, sizeof(Entity));
 }
 
 void entity_think(Entity* self)
