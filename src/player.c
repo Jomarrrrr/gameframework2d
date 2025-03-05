@@ -4,6 +4,7 @@
 #include "gfc_list.h"
 #include "gfc_input.h"
 
+#include "camera.h"
 #include "player.h"
 #include "slime.h"
 #include "air.h"
@@ -49,10 +50,9 @@ void player_think(Entity* self)
     if (self->position.y > my) dir.y = -1; 
     gfc_vector2d_normalize(&dir);
     gfc_vector2d_scale(self->velocity, dir, 3);
-    if (gfc_input_command_down("sup")) {
-        slime_new();
+    
 
-    }
+    
 }
 
 void player_update(Entity* self)
@@ -62,6 +62,7 @@ void player_update(Entity* self)
     if (self->frame >= 16) self->frame = 0;
     gfc_vector2d_add(self->position, self->position, self->velocity);
  
+    camera_center_on(self->position);
 }
 
 void player_free(Entity* self)

@@ -6,7 +6,7 @@
 
 #include "gfc_input.h"
 #include "gfc_string.h"
-
+#include "camera.h"
 #include "entity.h"
 #include "player.h"
 #include "world.h"  
@@ -16,7 +16,7 @@ int main(int argc, char * argv[])
     /*variable declarations*/
     int done = 0;
     const Uint8 * keys;
-    Sprite *sprite;
+    
     World* world;
 
     int mx,my;
@@ -42,12 +42,15 @@ int main(int argc, char * argv[])
     entity_system_initialize(1024); 
     SDL_ShowCursor(SDL_DISABLE);
     gfc_input_init("./config/input.cfg");
+    camera_set_size(gfc_vector2d(1200, 700));
     /*demo setup*/
-    sprite = gf2d_sprite_load_image("images/backgrounds/test_bg.jpg");
+  
     mouse = gf2d_sprite_load_all("images/pointer.png",32,32,16,0);
     player = player_new();
-   
-    world = world_test_new();
+    slime = slime_new();
+    world = world_load("config/test_world.map");
+    world_setup_camera(world);
+ 
     slog("press [escape] to quit");
     /*main game loop*/
     while(!done)
@@ -93,7 +96,8 @@ int main(int argc, char * argv[])
         //slog("Rendering at %f FPS",gf2d_graphics_get_frames_per_second());
     }
     entity_free(player);
-
+    entity_free(slime);
+    world_free(world);
     slog("---==== END ====---");
     return 0;
 }

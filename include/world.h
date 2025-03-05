@@ -3,6 +3,7 @@
 
 #include "gf2d_sprite.h"
 
+
 typedef struct
 {
     Sprite* background; /**<background image for the world*/
@@ -13,14 +14,10 @@ typedef struct
     Uint32  tileWidth;  /**<how many tiles wide the map is*/
 }World;
 
-World* world_test_new();
-/**
- * @brief load a world from a config file
- * @param filename the name of the world file to load
- * @return NULL on error, or a usable world otherwise
- */
 
 
+
+World* world_load(const char* filename);
 /**
  * @brief test function to see if world is working
  */
@@ -29,13 +26,13 @@ World* world_test_new();
 /**
  * @brief set the camera bounds to the world size
  */
-
+void world_setup_camera(World* world);
 
 /**
  * @brief allocate a new empty world
  * @return NULL on error, or a blank world
  */
-World* world_new();
+World* world_new(Uint32 width, Uint32 height);
 
 /**
  * @brief free a previously allocated world
@@ -48,5 +45,7 @@ void world_free(World* world);
  * @param world the world to draw
  */
 void world_draw(World* world);
+
+void world_tile_layer_build(World* world);
 
 #endif
