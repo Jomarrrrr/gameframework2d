@@ -22,7 +22,7 @@ int main(int argc, char * argv[])
     int mx,my;
     float mf = 0;
     Sprite *mouse;
-    GFC_Color mouseGFC_Color = gfc_color8(2,2,255,100);
+    GFC_Color mouseGFC_Color = gfc_color8(0,0,0,255);
     Entity* player; 
     Entity* slime;
 

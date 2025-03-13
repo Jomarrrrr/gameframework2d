@@ -29,7 +29,7 @@ Entity* slime_new()
 
 
     self->frame = 0;
-
+    self->position = gfc_vector2d(100, 100);
     self->update = slime_update;
     self->free = slime_free;
 }
@@ -37,7 +37,10 @@ Entity* slime_new()
 void slime_update(Entity* self)
 {
     if (!self) return;
-    self->velocity = gfc_vector2d(0, 0);
+    
+    self->accel.y = 0.2;
+    self->velocity.y += self->accel.y;
+
     if (gfc_input_command_down("sright")) {
         self->velocity.x += 1;
         
@@ -59,13 +62,15 @@ void slime_update(Entity* self)
 
     }
     if (gfc_input_command_down("kill")) {
-        entity_free(self);
+       
     }
     if (!self) return;
     self->frame + 0.1;
     if (self->frame >= 16) self->frame = 0;
     gfc_vector2d_normalize(&self->velocity);
     gfc_vector2d_add(self->position, self->position, self->velocity);
+
+    self->bounds = gfc_rect(self->position.x, self->position.y, 64, 64);
 
 }
 

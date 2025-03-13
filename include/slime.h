@@ -2,7 +2,7 @@
 #define __SLIME_H__
 
 #include "entity.h"
-
+#include "gfc_shape.h"
 
 /**
  * @brief slime companion

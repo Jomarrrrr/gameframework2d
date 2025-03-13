@@ -1,8 +1,11 @@
+#include <SDL.h>
+
 #include "simple_logger.h"
 
 
 #include "gfc_list.h"
 #include "gfc_input.h"
+#include "gfc_vector.h"
 
 #include "camera.h"
 #include "player.h"

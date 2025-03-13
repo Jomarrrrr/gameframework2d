@@ -2,6 +2,9 @@
 #define __ENTITY_H
 
 #include "gfc_types.h"
+#include "gfc_vector.h"
+#include "gfc_shape.h"
+
 #include "gf2d_sprite.h"
 
 
@@ -12,10 +15,13 @@ typedef struct Entity_S
     float       frame;      /**< current frame of animation for sprite*/
     GFC_Vector2D    position;   /**<where on the screen to draw the thing*/
     GFC_Vector2D	velocity;
+    GFC_Vector2D			accel;
+    GFC_Rect				bounds;
     void (*think)(struct Entity_S* self);   /**<function to call do make decisions*/
     void (*update)(struct Entity_S* self);  /**<function to call to execute those decisions*/
     void (*free)(struct Entity_S* self);    /**<clean up any custom allocated data*/
     void* data;                             /**<for ad hoc addition data for the entity*/
+
 }Entity;
 
 void entity_system_initialize(Uint32 max);

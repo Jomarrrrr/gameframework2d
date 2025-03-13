@@ -9,6 +9,13 @@ typedef struct
     Entity* entity_list;
     Uint32  entity_max;
 }EntityManager;
+typedef enum
+{
+    JUMPER,
+    SLIME
+
+}Entitytype;
+
 
 void entity_system_close();
 

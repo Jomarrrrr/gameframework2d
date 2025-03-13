@@ -6,11 +6,13 @@
 #include "gfc_list.h"
 #include "gfc_input.h"
 
+#include "entity.h"
 #include "slime.h"
 #include "air.h"
 float life = 1;
 void air_update(Entity* self);
 void air_free(Entity* self);
+
 Entity* air_new() {
 	Entity* self;
 	self = entity_new();
@@ -58,7 +60,7 @@ void air_update(Entity* self) {
 void air_free(Entity* self)
 {
 	if (!self) return;
-	free(self);
+	entity_free(self);
 
 }
 
