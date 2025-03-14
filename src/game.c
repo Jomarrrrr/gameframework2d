@@ -6,6 +6,8 @@
 
 #include "gfc_input.h"
 #include "gfc_string.h"
+
+#include "font.h"
 #include "camera.h"
 #include "entity.h"
 #include "player.h"
@@ -39,6 +41,7 @@ int main(int argc, char * argv[])
         0);
     gf2d_graphics_set_frame_delay(16);
     gf2d_sprite_init(1024);
+    font_init();
     entity_system_initialize(1024); 
     SDL_ShowCursor(SDL_DISABLE);
     gfc_input_init("./config/input.cfg");
@@ -77,7 +80,7 @@ int main(int argc, char * argv[])
             entity_system_draw();
 
 
-
+            font_draw_text("Press ESC to quit\nain't that neato", FS_small, GFC_COLOR_CYAN, gfc_vector2d(10, 10));
 
             //UI elements last
             gf2d_sprite_draw(
