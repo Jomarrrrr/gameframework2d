@@ -296,7 +296,7 @@ void world_ent_collide(World* world, Entity* self) {
         {
             
             if (gfc_rect_overlap(check->bounds, gfc_rect(i * 64, j * 64, 64, 64))) {
-                
+                self->velocity.x = 0;
             }
         }
     }
