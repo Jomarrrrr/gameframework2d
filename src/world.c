@@ -9,6 +9,8 @@
 
 #include "camera.h"
 #include "world.h"
+#include "entity.h"
+
 
 
 
@@ -249,9 +251,56 @@ void world_setup_camera(World* world)
     camera_enable_binding(1);
 }
 
+Uint8 world_tile(World* world, GFC_Vector2D position)
+{
+    if ((!world) || (!world->tileMap)) return 0;
+    return world->tileMap[(Uint32)position.y * world->tileWidth + (Uint32)position.x];
 
+}
+int world_bounds(World* world, GFC_Shape shape)
+{
+    if ((!world) || (!world->tileSet)) return 0;
+    int i, j;
+    Uint8 tileIndex;
+    GFC_Rect rect = { 0 };
+    GFC_Shape tile;
+    rect.w = world->tileSet->frame_w;
+    rect.h = world->tileSet->frame_h;
+    for (j = 0; j < world->tileMap; j++)
+    {
+        for (i = 0; i < world->tileMap[j]; i++)
+        {
+            tileIndex = world_tile(world, gfc_vector2d(i, j));
+            if (!tileIndex) continue;
+            rect.x = (i * rect.w);
+            rect.y = (j * rect.h);
+            tile = gfc_shape_from_rect(rect);
+            if (gfc_shape_overlap(tile, shape)) return 1;
+        }
+    }
+    return 0;
+}
 
+void world_ent_collide(World* world, Entity* self) {
 
+    int i, j;
+    int index;
+    Entity* check = self;
+    for (j = 0; j < world->tileHeight; j++)
+    {
+        for (i = 0; i < world->tileWidth; i++)
+            index = i + (j * world->tileWidth);
+        if (world->tileMap[index] == 0) continue;
+
+        if (world->tileMap[index] == 1)
+        {
+            
+            if (gfc_rect_overlap(check->bounds, gfc_rect(i * 64, j * 64, 64, 64))) {
+                slog("hit");
+            }
+        }
+    }
+}
 
 
 

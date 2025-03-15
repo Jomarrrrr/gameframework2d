@@ -65,7 +65,7 @@ void player_update(Entity* self)
     if (self->frame >= 16) self->frame = 0;
     gfc_vector2d_add(self->position, self->position, self->velocity);
  
-    camera_center_on(self->position);
+    
 }
 
 void player_free(Entity* self)

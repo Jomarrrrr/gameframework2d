@@ -26,7 +26,7 @@ Entity* air_new() {
 	// start sprite
 	self->sprite = gf2d_sprite_load_all(
 		"images/rat.png", 128, 110, 1, 0);
-
+	self->position = gfc_vector2d(100, 100);
 	self->frame = 0;
 	
 	

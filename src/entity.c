@@ -11,10 +11,15 @@ typedef struct
 }EntityManager;
 typedef enum
 {
+    ETT_none,
+    ETT_player 
+}EntityTeamType;
+typedef enum
+{
     JUMPER,
     SLIME
 
-}Entitytype;
+};
 
 
 void entity_system_close();
@@ -149,6 +154,19 @@ void entity_system_draw()
         if (!_entity_manager.entity_list[i]._inuse)continue;//skip any inactive entities
         entity_draw(&_entity_manager.entity_list[i]);
     }
+}
+
+int entity_collision_check(Entity* self, Entity* other)
+{
+    GFC_Rect bounds1 = { 0 }, bounds2 = { 0 };
+    if ((!self) || (!other)) return 0;
+    if ((self->team == ETT_none) || (other->team == ETT_none))
+    {
+        if (self->team == self->team) return 0;
+    }
+    gfc_rect_copy(bounds1, self->bounds);
+    gfc_rect_copy(bounds2, other->bounds);
+    return gfc_rect_overlap(bounds1, bounds2);
 }
 
 /*eol@eof*/

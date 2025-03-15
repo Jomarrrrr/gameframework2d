@@ -1,12 +1,18 @@
+#include <SDL.h>
+
 #include "simple_logger.h"
 
 #include "gfc_list.h"
 #include "gfc_input.h"
-
+#include "camera.h"
+#include "player.h"
 #include "slime.h"
 #include "air.h"
 
+
+
 void slime_update(Entity* self);
+void slime_think(Entity* self);
 void slime_free(Entity* self);
 
 Entity* slime_new()
@@ -26,58 +32,94 @@ Entity* slime_new()
         128,
         1,
         0);
+    self->offset.y = 0;
+    self->offset.x = 0;
 
-
+    self->bounds = gfc_rect(self->offset.x+self->position.x, self->position.y, self->position.x + 128, self->position.y + 128);
     self->frame = 0;
     self->position = gfc_vector2d(100, 100);
     self->update = slime_update;
+    self->think = slime_think;
     self->free = slime_free;
 }
 
-void slime_update(Entity* self)
+void slime_think(Entity* self)
 {
+
     if (!self) return;
-    
-    self->accel.y = 0.2;
-    self->velocity.y += self->accel.y;
+    GFC_Vector2D inp = { 0 };
+    int mx = 0, my = 0;
 
     if (gfc_input_command_down("sright")) {
-        self->velocity.x += 1;
-        
+        inp.x += 1;
+        gfc_vector2d_scale(self->velocity, inp, 2);
+
     }
     if (gfc_input_command_down("sleft")) {
-        self->velocity.x -= 1;
-   
+        inp.x -= 1;
+        gfc_vector2d_scale(self->velocity, inp, 2);
+
     }
     if (gfc_input_command_down("sup")) {
-        self->velocity.y -= 1;
+        inp.y = -1;
+        gfc_vector2d_normalize(&inp);
+        gfc_vector2d_scale(self->velocity, inp, 10);
        
     }
     if (gfc_input_command_down("sdown")) {
-        self->velocity.y += 1;
+        self->position = gfc_vector2d(self->position.x, self->position.y + 5);
 
     }
     if (gfc_input_command_down("jump")) {
-       air_new();
+        self->position = gfc_vector2d(self->position.x, self->position.y -50);
 
     }
+    if (gfc_input_command_down("dleft")) {
+        inp.x -= 1;
+        gfc_vector2d_scale(self->velocity, inp, 8);
+
+    }
+    if (gfc_input_command_down("dright")) {
+        inp.x += 1;
+        gfc_vector2d_scale(self->velocity, inp, 8);
+    }
+    if (gfc_input_command_down("air")) {
+        air_new();
+    }
     if (gfc_input_command_down("kill")) {
-       
+        SDL_GetMouseState(&mx, &my);
+        self->position.x = mx;
+        self->position.y = my;
     }
     if (!self) return;
     self->frame + 0.1;
     if (self->frame >= 16) self->frame = 0;
-    gfc_vector2d_normalize(&self->velocity);
-    gfc_vector2d_add(self->position, self->position, self->velocity);
+  
 
-    self->bounds = gfc_rect(self->position.x, self->position.y, 64, 64);
+
+    self->bounds = gfc_rect(self->position.x, self->position.y, 128, 128);
+
+}
+void slime_update(Entity* self) {
+    if (!self) return;
+    if (self->position.y >= 447) self->position.y = 447; 
+   
+
+    GFC_Vector2D gravity = gfc_vector2d(0, 1);
+
+    gfc_vector2d_add(self->velocity, self->velocity, gravity);
+    gfc_vector2d_add(self->position, self->position, self->velocity);
+    gfc_vector2d_normalize(&self->velocity);
+    
+    camera_center_on(self->position);
+
 
 }
 
 void slime_free(Entity* self)
 {
     if(!self) return;
-    free(self);
+    entity_free(self);
     
 }
 
