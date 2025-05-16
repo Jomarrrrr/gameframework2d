@@ -4,10 +4,13 @@
 
 #include "gfc_list.h"
 #include "gfc_input.h"
+#include "gfc_audio.h"
+
 #include "camera.h"
 #include "player.h"
 #include "slime.h"
 #include "air.h"
+#include "world.h"
 
 
 
@@ -41,14 +44,19 @@ Entity* slime_new()
     self->update = slime_update;
     self->think = slime_think;
     self->free = slime_free;
+   
 }
 
 void slime_think(Entity* self)
 {
 
+
     if (!self) return;
     GFC_Vector2D inp = { 0 };
     int mx = 0, my = 0;
+    SDL_Joystick* joystick = SDL_JoystickOpen(1);
+    GFC_Sound* sfx = gfc_sound_load("audio/tele.wav", .5, 0);
+
 
     if (gfc_input_command_down("sright")) {
         inp.x += 1;
@@ -90,6 +98,7 @@ void slime_think(Entity* self)
         SDL_GetMouseState(&mx, &my);
         self->position.x = mx;
         self->position.y = my;
+        gfc_sound_play(sfx, 0, 1, -1, -1);
     }
     if (!self) return;
     self->frame + 0.1;
@@ -103,6 +112,7 @@ void slime_think(Entity* self)
 void slime_update(Entity* self) {
     if (!self) return;
     if (self->position.y >= 447) self->position.y = 447; 
+	if (self->position.y <= 0) self->position.y = 0;
    
 
     GFC_Vector2D gravity = gfc_vector2d(0, 1);

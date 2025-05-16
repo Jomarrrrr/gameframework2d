@@ -21,7 +21,10 @@ typedef struct Entity_S
     GFC_Vector2D    position;   /**<where on the screen to draw the thing*/
     GFC_Vector2D	velocity;
     GFC_Vector2D			accel;
-    GFC_Rect				bounds;
+	GFC_Rect				bounds; /**<the bounding box for the entity*/
+	GFC_Vector2D*   pointC; //stuff for collition
+
+
     void (*think)(struct Entity_S* self);   /**<function to call do make decisions*/
     void (*update)(struct Entity_S* self);  /**<function to call to execute those decisions*/
     void (*free)(struct Entity_S* self);    /**<clean up any custom allocated data*/
@@ -67,6 +70,8 @@ void entity_system_update();
 void entity_system_draw();
 
 int entity_collision_check(Entity* self, Entity* other);
+
+GFC_Vector2D get_position(Entity* self);
 
 
 #endif

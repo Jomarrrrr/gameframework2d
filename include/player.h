@@ -10,4 +10,5 @@
  */
 Entity* player_new();
 
+GFC_Vector2D get_player(Entity* player);
 #endif

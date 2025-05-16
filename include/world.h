@@ -4,9 +4,13 @@
 #include "gf2d_sprite.h"
 #include "gfc_shape.h"
 
+#include "camera.h"
+
+
 typedef struct
 {
     Sprite* background; /**<background image for the world*/
+	Sprite* parallax;   /**<parallax image for the world*/
     Sprite* tileLayer;  /**<prerendered tile layer*/
     Sprite* tileSet;    /**<sprite containing tiles for the world*/
     Uint8* tileMap;    /**<the tiles that make up the world*/
@@ -15,7 +19,7 @@ typedef struct
     GFC_Rect* bounds; //collision 
 }World;
 
-
+static World* world = NULL;
 
 
 World* world_load(const char* filename);

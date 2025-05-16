@@ -5,6 +5,7 @@
 #include "gfc_config.h"
 
 #include "gf2d_graphics.h"
+#include "gfc_audio.h"
 
 
 #include "camera.h"
@@ -83,6 +84,7 @@ World* world_load(const char* filename)
     int i, j;
     const char* tileSet;
     const char* background;
+	const char* parallax;
     int frame_w, frame_h;
     int frames_per_line;
     if (!filename)
@@ -135,6 +137,9 @@ World* world_load(const char* filename)
     }
     background = sj_object_get_value_as_string(wjson, "background");
     world->background = gf2d_sprite_load_image(background);
+
+	parallax = sj_object_get_value_as_string(wjson, "para");
+	world->parallax = gf2d_sprite_load_image(parallax);
 
     tileSet = sj_object_get_value_as_string(wjson, "tileSet");
     sj_object_get_value_as_int(wjson, "frame_w", &frame_w);
@@ -226,13 +231,21 @@ void world_free(World* world)
     gf2d_sprite_free(world->tileLayer);
     free(world->tileMap);
     free(world);
+   
+
 }
 void world_draw(World* world)
 {
     GFC_Vector2D offset;
+    GFC_Vector2D para;
+
     if (!world) return;
     offset = camera_get_offset();
+	para = camera_get_position();
+	para.x = para.x * 0.1;
+	para.y = para.y * 0.1;
     gf2d_sprite_draw_image(world->background, gfc_vector2d(0, 0));
+	gf2d_sprite_draw(world->parallax, para, NULL, (0, 0), NULL, NULL, NULL, 0 );
    
     gf2d_sprite_draw_image(world->tileLayer, offset);
 }

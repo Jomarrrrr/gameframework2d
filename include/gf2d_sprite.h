@@ -143,5 +143,13 @@ void gf2d_sprite_draw_to_surface(
  */
 Sprite *gf2d_sprite_new();
 
+Sprite* gf2d_sprite_load_light(
+    const char* filename,
+    Sint32 frameWidth,
+    Sint32 frameHeigh,
+    Sint32 framesPerLine,
+    Bool    keepSurface
+);
+
 
 #endif

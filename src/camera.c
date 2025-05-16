@@ -1,4 +1,5 @@
 #include "simple_logger.h"
+#include "gf2d_graphics.h"
 
 #include "camera.h"
 

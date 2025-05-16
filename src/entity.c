@@ -169,4 +169,15 @@ int entity_collision_check(Entity* self, Entity* other)
     return gfc_rect_overlap(bounds1, bounds2);
 }
 
+GFC_Vector2D get_position(Entity* self) {
+    GFC_Vector2D position;
+    position = self->position;
+    return position;
+}
+GFC_Vector2D get_other_position(Entity* other) {
+	GFC_Vector2D position;
+	position = other->position;
+	return position;
+}
+
 /*eol@eof*/
